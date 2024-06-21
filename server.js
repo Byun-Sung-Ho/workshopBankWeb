@@ -44,7 +44,7 @@ app.get('/landPage', (req, res)=>{
 })
 
 
-// 상세 게시물 조회
+// 상세 게시물 조회 (& 수정 페이지로 이동)
 // land_id가 숫자인 경우에만 동작해서 정규식 추가
 app.get('/landPage/:land_id(\\d+)', (req, res) => {
     const id = req.params.land_id;
@@ -60,12 +60,6 @@ app.get('/landPage/:land_id(\\d+)', (req, res) => {
     });
 });
 
-
-// 게시물 작성 페이지로 이동
-// app.get('/land/:land_id', (req, res) => {
-//     console.log('land_id : ', req.params.land_id);
-//     res.render('editLand.ejs');
-// });
 
 // 게시물 Insert
 app.post('/land', function(req, res){
@@ -86,28 +80,17 @@ app.post('/land', function(req, res){
 });
 
 
-// 게시물 수정 페이지로 이동
-app.get('/editLand/:id(\\d+)', (req, res) => {
+
+// 게시물 수정
+app.post('/editLand/:id(\\d+)', (req, res) => {
     const id = req.params.id;
 
-    const sql = `SELECT * FROM land WHERE land_id = ${id}`;
+    // unit_size에서 m² 제거, 빈칸 제거
+    req.body.unit_size = req.body.unit_size.replace('m²', '').trim();
 
-    conn.query(sql, function(err, rows, fields){
-        if(err){
-            console.log("Query Error");
-            throw err;
-        }else{
-            console.log(rows);
-            res.render('landDetail.ejs', {data: rows});
-        }
-    });
-});
+    // price_per_square_meter 에서 숫자만 추출
+    req.body.price_per_square_meter = req.body.price_per_square_meter.replace(/[^0-9]/g, '');
 
-// 게시물 Update
-app.post('/updateLand/:id(\\d+)', (req, res) => {
-    const id = req.params.id;
-    console.log('id >>>>>>>>>>>>>: ', id);
-    console.log('req.body >>>>>>>>>>>>>: ', req.body);
     const { name, location, unit_size, price_per_square_meter, construction_company, parking_ratio } = req.body;
 
     const sql = `
@@ -122,9 +105,6 @@ app.post('/updateLand/:id(\\d+)', (req, res) => {
         WHERE 
             land_id = ?
     `;
-
-
-    console.log('sql >>>>>>>>>>>>>: ', sql);
 
     const values = [name, location, unit_size, price_per_square_meter, construction_company, parking_ratio, id];
 
