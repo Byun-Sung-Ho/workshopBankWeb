@@ -8,27 +8,26 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">BankName</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled">Disabled</a>
-              </li>
-            </ul>
-          </div>
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">BankName</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled">Disabled</a>
+            </li>
+          </ul>
         </div>
       </nav>
       
@@ -70,25 +69,25 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <script>
-      $(".delete").click(function(e){
+      $(".delete").click(function(e) {
         let item = $(this);
         let land_id = e.target.dataset.land_id;
-        
+
         $.ajax({
-            type:'post',
-            url:'http://127.0.0.1:8080/landDelete',
-            data:{
-                land_id:land_id
+            type: 'post',
+            url: 'http://127.0.0.1:8080/landDelete',
+            data: {
+              land_id: land_id
             }
-        })
-        .done((result)=>{
-          // location.reload();
-          item.parent('td').parent('tr').remove();
-        })
-        .fail((xhr, textStatus, err)=>{
-          console.log(xhr, textStatus, err);
-        });
+          })
+          .done((result) => {
+            // location.reload();
+            item.parent('td').parent('tr').remove();
+          })
+          .fail((xhr, textStatus, err) => {
+            console.log(xhr, textStatus, err);
+          });
       });
-      </script>
+    </script>
   </body>
 </html>

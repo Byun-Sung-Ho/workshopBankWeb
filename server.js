@@ -30,26 +30,8 @@ app.listen(8080, function(){
     console.log('server ready');
 });
 
-// 게시물 조회
-app.get('/landPage/:id', (req, res) => {
-    // TEST ========= TODO : 나중에 수정 후 삭제
-    const id = req.params.id;
-    // const id = 3;
 
-    const sql = `SELECT * FROM land WHERE land_id = ${id}`;
-    
-    conn.query(sql, function(err, rows, fields){
-        if(err){
-            console.log("Query Error");
-            throw err;
-        }else{
-            console.log(rows);
-            res.render('landDetail.ejs', {data:rows});
-        }
-    });
-
-});
-
+// 리스트 조회
 app.get('/landPage', (req, res)=>{
     const rows = conn.query("select * from land", function (err, rows, fields) {
         if (err){
@@ -61,7 +43,8 @@ app.get('/landPage', (req, res)=>{
       });
 })
 
-// 상세 게시물 조회
+
+// 상세 게시물 조회 (& 수정 페이지로 이동)
 // land_id가 숫자인 경우에만 동작해서 정규식 추가
 app.get('/landPage/:land_id(\\d+)', (req, res) => {
     const id = req.params.land_id;
@@ -92,7 +75,7 @@ app.post('/landInsert', function(req, res){
                 // 성공적으로 쿼리가 실행되면 200 상태 코드로 응답
                 res.redirect('/landPage')
                 res.status(200).send();
-        }
+            }
     });
 });
 
@@ -119,6 +102,18 @@ app.post('/updateLand/:id(\\d+)', (req, res) => {
     const id = req.params.id;
     console.log('id >>>>>>>>>>>>>: ', id);
     console.log('req.body >>>>>>>>>>>>>: ', req.body);
+});
+
+// 게시물 수정
+app.post('/editLand/:id(\\d+)', (req, res) => {
+    const id = req.params.id;
+
+    // unit_size에서 m² 제거, 빈칸 제거
+    req.body.unit_size = req.body.unit_size.replace('m²', '').trim();
+
+    // price_per_square_meter 에서 숫자만 추출
+    req.body.price_per_square_meter = req.body.price_per_square_meter.replace(/[^0-9]/g, '');
+
     const { name, location, unit_size, price_per_square_meter, construction_company, parking_ratio } = req.body;
 
     const sql = `
@@ -134,9 +129,7 @@ app.post('/updateLand/:id(\\d+)', (req, res) => {
             land_id = ?
     `;
 
-
     console.log('sql >>>>>>>>>>>>>: ', sql);
-
     const values = [name, location, unit_size, price_per_square_meter, construction_company, parking_ratio, id];
 
     conn.query(sql, values, function(err, result){
@@ -164,4 +157,4 @@ app.post('/landDelete', function(req, res){
             res.status(200).send();
         }
     });
-})
+});
