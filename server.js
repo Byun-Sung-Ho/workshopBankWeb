@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 var conn = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "root1234",
     database: "workshopBankWeb", 
 });
 
@@ -154,5 +154,40 @@ app.get('/personalBankingPage', (req,res)=>{
             });
         }
     });
-})
+});
 
+app.post('/addTransaction', (req, res) => {
+    const { user_id, amount, description } = req.body;
+    
+    const insertTransaction = `INSERT INTO transactions (user_id, amount, transaction_description) VALUES (?, ?, ?)`;
+    const updateUserBalance = `UPDATE users SET balance = balance + ? WHERE user_id = ?`;
+
+    conn.beginTransaction((err) => {
+        if (err) throw err;
+
+        conn.query(insertTransaction, [user_id, amount, description], (err, results) => {
+            if (err) {
+                return conn.rollback(() => {
+                    throw err;
+                });
+            }
+
+            conn.query(updateUserBalance, [amount, user_id], (err, results) => {
+                if (err) {
+                    return conn.rollback(() => {
+                        throw err;
+                    });
+                }
+
+                conn.commit((err) => {
+                    if (err) {
+                        return conn.rollback(() => {
+                            throw err;
+                        });
+                    }
+                    res.redirect('/personalBankingPage');
+                });
+            });
+        });
+    });
+});

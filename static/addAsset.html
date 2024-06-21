@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Transaction Details</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">BankName</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <section id="add-transaction" class="py-5">
+      <div class="container">
+        <h2 class="text-center">거래 상세 정보 추가</h2>
+        <form action="/addTransaction" method="POST" class="mt-4">
+          <div class="form-group">
+            <h2>[ 사용자 ID ] User1</h2>
+
+            <!-- <p id="user_id_display"><%= user_id %></p> -->
+            <!-- USER_ID 1번 고정시켜놓음 -->
+            <input type="hidden" id="user_id" name="user_id" value="1">
+          </div>
+          <div class="form-group">
+            <label for="location"><strong>금액</strong></label>
+            <input type="number" class="form-control" id="amount" name="amount" required>
+          </div>
+          <div class="form-group">
+            <label for="transaction_description"><strong>거래 설명</strong></label>
+            <input type="text" class="form-control" id="transaction_description" name="transaction_description">
+          </div>
+          <button type="submit" class="btn btn-primary">추가</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-dark text-white">
+      <div class="container text-center">
+        <p>&copy; 2024 BankName. All rights reserved.</p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#privacy" class="text-white">Privacy Policy</a></li>
+          <li class="list-inline-item"><a href="#terms" class="text-white">Terms of Service</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
