@@ -148,7 +148,7 @@ app.get('/personalBankingPage', (req,res)=>{
         if (err){
             console.log(err);
         }else{
-            res.render('personalManagement1.ejs',{
+            res.render('personalManagement.ejs',{
                 data : rows,
                 balance : userData.balance
             });
