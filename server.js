@@ -34,3 +34,17 @@ app.get('/landPage', (req, res)=>{
         }
       });
 })
+
+app.post('/landDelete', function(req, res){
+    console.log(req.body.land_id);
+    
+    conn.query("delete from land where land_id=?",[req.body.land_id], function (err, rows, fields) {
+        if (err){
+            console.log(err);
+            res.status(500).send();
+        }
+        else{
+            res.status(200).send();
+        }
+    });
+})
