@@ -132,3 +132,7 @@ app.post('/landDelete', function(req, res){
         }
     });
 });
+
+app.get('/personalBankingPage', (req,res)=>{
+    res.render('personalManagement.ejs');
+})
