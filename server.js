@@ -7,8 +7,7 @@ const bodyParser = require('body-parser');
 var conn = mysql.createConnection({
     host: "localhost",
     user: "root",
-
-    password: "root",
+    password: "root1234",
     database: "workshopBankWeb", 
 });
 
@@ -31,26 +30,8 @@ app.listen(8080, function(){
     console.log('server ready');
 });
 
-// 게시물 조회
-app.get('/landPage/:id', (req, res) => {
-    // TEST ========= TODO : 나중에 수정 후 삭제
-    const id = req.params.id;
-    // const id = 3;
 
-    const sql = `SELECT * FROM land WHERE land_id = ${id}`;
-    
-    conn.query(sql, function(err, rows, fields){
-        if(err){
-            console.log("Query Error");
-            throw err;
-        }else{
-            console.log(rows);
-            res.render('landDetail.ejs', {data:rows});
-        }
-    });
-
-});
-
+// 리스트 조회
 app.get('/landPage', (req, res)=>{
     const rows = conn.query("select * from land", function (err, rows, fields) {
         if (err){
@@ -62,6 +43,104 @@ app.get('/landPage', (req, res)=>{
       });
 })
 
+
+// 상세 게시물 조회
+// land_id가 숫자인 경우에만 동작해서 정규식 추가
+app.get('/landPage/:land_id(\\d+)', (req, res) => {
+    const id = req.params.land_id;
+    const sql = `SELECT * FROM land WHERE land_id = ${id}`;
+    conn.query(sql, function(err, rows, fields){
+        if(err){
+            console.log("Query Error");
+            throw err;
+        }else{
+            console.log(rows);
+            res.render('landDetail.ejs', {data:rows});
+        }
+    });
+});
+
+
+// 게시물 작성 페이지로 이동
+// app.get('/land/:land_id', (req, res) => {
+//     console.log('land_id : ', req.params.land_id);
+//     res.render('editLand.ejs');
+// });
+
+// 게시물 Insert
+app.post('/land', function(req, res){
+    // console.log(req.body);
+    const sql = "INSERT INTO land (land_name, land_price, land_size, land_address, land_detail) VALUES (?, ?, ?, ?, ?)";
+
+    // SQL 쿼리 실행
+    conn.query(sql, [req.body.land_name, req.body.land_price, req.body.land_size, req.body.land_address, req.body.land_detail], function (err, rows, fields) {
+        
+        if (err) {
+            console.log(err);
+            res.status(500).send();
+        } else {
+            // 성공적으로 쿼리가 실행되면 200 상태 코드로 응답
+            res.status(200).send();
+        }
+    });
+});
+
+
+// 게시물 수정 페이지로 이동
+app.get('/editLand/:id(\\d+)', (req, res) => {
+    const id = req.params.id;
+
+    const sql = `SELECT * FROM land WHERE land_id = ${id}`;
+
+    conn.query(sql, function(err, rows, fields){
+        if(err){
+            console.log("Query Error");
+            throw err;
+        }else{
+            console.log(rows);
+            res.render('landDetail.ejs', {data: rows});
+        }
+    });
+});
+
+// 게시물 Update
+app.post('/updateLand/:id(\\d+)', (req, res) => {
+    const id = req.params.id;
+    console.log('id >>>>>>>>>>>>>: ', id);
+    console.log('req.body >>>>>>>>>>>>>: ', req.body);
+    const { name, location, unit_size, price_per_square_meter, construction_company, parking_ratio } = req.body;
+
+    const sql = `
+        UPDATE land 
+        SET 
+            name = ?, 
+            location = ?, 
+            unit_size = ?, 
+            price_per_square_meter = ?, 
+            construction_company = ?, 
+            parking_ratio = ?
+        WHERE 
+            land_id = ?
+    `;
+
+
+    console.log('sql >>>>>>>>>>>>>: ', sql);
+
+    const values = [name, location, unit_size, price_per_square_meter, construction_company, parking_ratio, id];
+
+    conn.query(sql, values, function(err, result){
+        if(err){
+            console.log("Update Error");
+            throw err;
+        }else{
+            console.log("Update Success");
+            res.redirect(`/landPage/${id}`);
+        }
+    });
+});
+
+
+// 게시물 삭제
 app.post('/landDelete', function(req, res){
     console.log(req.body.land_id);
     
@@ -74,4 +153,4 @@ app.post('/landDelete', function(req, res){
             res.status(200).send();
         }
     });
-})
+});
