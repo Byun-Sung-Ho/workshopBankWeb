@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 var conn = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "root1234",
+    password: "root",
     database: "workshopBankWeb", 
 });
 
@@ -157,15 +157,15 @@ app.get('/personalBankingPage', (req,res)=>{
 });
 
 app.post('/addTransaction', (req, res) => {
-    const { user_id, amount, description } = req.body;
-    
+    const { user_id, amount, transaction_description } = req.body;
+    console.log(req.body);
     const insertTransaction = `INSERT INTO transactions (user_id, amount, transaction_description) VALUES (?, ?, ?)`;
     const updateUserBalance = `UPDATE users SET balance = balance + ? WHERE user_id = ?`;
 
     conn.beginTransaction((err) => {
         if (err) throw err;
 
-        conn.query(insertTransaction, [user_id, amount, description], (err, results) => {
+        conn.query(insertTransaction, [user_id, amount, transaction_description], (err, results) => {
             if (err) {
                 return conn.rollback(() => {
                     throw err;
