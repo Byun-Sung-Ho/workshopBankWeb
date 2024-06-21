@@ -1,16 +1,14 @@
-//setting부
-
 //import
+//setting부
 const express = require('express');
-const mongoClient = require('mongodb').MongoClient;
-const bodyParser = require('body-parser');
 var mysql = require("mysql");
+const bodyParser = require('body-parser');
 
 var conn = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "root",
-    database: "myboard",
+    database: "workshopbankweb",
 });
 
 conn.connect();
@@ -25,3 +23,14 @@ app.use(express.static('static'));
 app.listen(8080, function(){
     console.log('server ready');
 });
+
+app.get('/landPage', (req, res)=>{
+    const rows = conn.query("select * from land", function (err, rows, fields) {
+        if (err){
+            console.log(err);
+        }else{
+          console.log(rows);
+          res.render('landPage.ejs',{data:rows})
+        }
+      });
+})
