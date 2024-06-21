@@ -1,14 +1,14 @@
-//setting부
-
 //import
+//setting부
 const express = require('express');
-const bodyParser = require('body-parser');
 var mysql = require("mysql");
+const bodyParser = require('body-parser');
 
 var conn = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "root1234",
+
+    password: "root",
     database: "workshopBankWeb", 
 });
 
@@ -50,3 +50,28 @@ app.get('/landPage/:id', (req, res) => {
     });
 
 });
+
+app.get('/landPage', (req, res)=>{
+    const rows = conn.query("select * from land", function (err, rows, fields) {
+        if (err){
+            console.log(err);
+        }else{
+          console.log(rows);
+          res.render('landPage.ejs',{data:rows})
+        }
+      });
+})
+
+app.post('/landDelete', function(req, res){
+    console.log(req.body.land_id);
+    
+    conn.query("delete from land where land_id=?",[req.body.land_id], function (err, rows, fields) {
+        if (err){
+            console.log(err);
+            res.status(500).send();
+        }
+        else{
+            res.status(200).send();
+        }
+    });
+})
