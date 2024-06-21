@@ -158,3 +158,27 @@ app.post('/landDelete', function(req, res){
         }
     });
 });
+
+app.get('/personalBankingPage', (req,res)=>{
+
+    let userData;
+    conn.query("select * from users where user_id=?",[1],function (err, rows, fields) {
+        if (err){
+            console.log(err);
+        }else{
+            userData=rows[0];
+            console.log(userData.balance);
+        }
+    });
+
+    const rows = conn.query("select * from transactions where user_id=?",[1], function (err, rows, fields) {
+        if (err){
+            console.log(err);
+        }else{
+            res.render('personalManagement1.ejs',{
+                data : rows,
+                balance : userData.balance
+            });
+        }
+    });
+})
