@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 var conn = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "root1234",
     database: "workshopBankWeb", 
 });
 
@@ -41,7 +41,7 @@ app.get('/landPage', (req, res)=>{
           res.render('landPage.ejs',{data:rows})
         }
       });
-})
+});
 
 
 // 상세 게시물 조회 (& 수정 페이지로 이동)
@@ -80,30 +80,6 @@ app.post('/landInsert', function(req, res){
 });
 
 
-// 게시물 수정 페이지로 이동
-app.get('/editLand/:id(\\d+)', (req, res) => {
-    const id = req.params.id;
-
-    const sql = `SELECT * FROM land WHERE land_id = ${id}`;
-
-    conn.query(sql, function(err, rows, fields){
-        if(err){
-            console.log("Query Error");
-            throw err;
-        }else{
-            console.log(rows);
-            res.render('landDetail.ejs', {data: rows});
-        }
-    });
-});
-
-// 게시물 Update
-app.post('/updateLand/:id(\\d+)', (req, res) => {
-    const id = req.params.id;
-    console.log('id >>>>>>>>>>>>>: ', id);
-    console.log('req.body >>>>>>>>>>>>>: ', req.body);
-});
-
 // 게시물 수정
 app.post('/editLand/:id(\\d+)', (req, res) => {
     const id = req.params.id;
@@ -114,12 +90,11 @@ app.post('/editLand/:id(\\d+)', (req, res) => {
     // price_per_square_meter 에서 숫자만 추출
     req.body.price_per_square_meter = req.body.price_per_square_meter.replace(/[^0-9]/g, '');
 
-    const { name, location, unit_size, price_per_square_meter, construction_company, parking_ratio } = req.body;
+    const { location, unit_size, price_per_square_meter, construction_company, parking_ratio } = req.body;
 
     const sql = `
         UPDATE land 
         SET 
-            name = ?, 
             location = ?, 
             unit_size = ?, 
             price_per_square_meter = ?, 
@@ -129,8 +104,7 @@ app.post('/editLand/:id(\\d+)', (req, res) => {
             land_id = ?
     `;
 
-    console.log('sql >>>>>>>>>>>>>: ', sql);
-    const values = [name, location, unit_size, price_per_square_meter, construction_company, parking_ratio, id];
+    const values = [location, unit_size, price_per_square_meter, construction_company, parking_ratio, id];
 
     conn.query(sql, values, function(err, result){
         if(err){
@@ -138,7 +112,7 @@ app.post('/editLand/:id(\\d+)', (req, res) => {
             throw err;
         }else{
             console.log("Update Success");
-            res.redirect(`/landPage/${id}`);
+            res.redirect('/landPage');
         }
     });
 });

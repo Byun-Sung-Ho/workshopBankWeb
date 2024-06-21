@@ -29,43 +29,6 @@
             </li>
           </ul>
         </div>
-<<<<<<< HEAD
-=======
-      </nav>
-      
-      <table class = "table table-hover table-striped text-center container mt-4" style = "border: 1px solid;">
-        <thead>
-          <tr>         
-            <th>이름</th>
-            <th>위치</th>
-            <th>크기(제곱미터)</th>
-            <th>단위 가격</th>
-            <th>건설사</th>
-            <th>건설사</th>
-            <th>세대당 주차 대수</th>
-          </tr>
-        </thead>
-        <tbody>
-          
-          <% for(let i=0; i < data.length; i++){ %>
-          <tr>         
-            <td><a href="/landPage/<%= data[i].land_id %>"><%= data[i].name %></a></td>
-            <td><%= data[i].location %></td>
-            <td><%= data[i].unit_size %></td>
-            <td><%= data[i].price_per_square_meter %></td>
-            <td><%= data[i].construction_company %></td>
-            <td><%= data[i].parking_ratio %></td>
-            <td><button data-land_id="<%= data[i].land_id %>" class = 'delete btn btn-outline-danger' >삭제</button></td>
-          </tr>
-          <% } %>
-          <tr>
-            <td></td><td></td><td></td><td></td><td></td><td></td>
-            <td><button class = 'add btn btn-primary' onClick="location.href='addLand.html'">추가</button></td>
-          </tr>
-        </tbody>            
-        </table>
-      </div>
->>>>>>> refs/remotes/origin/main
     </nav>
 
     <table class="table table-hover table-striped text-center container mt-4" style="border: 1px solid;">
@@ -84,7 +47,46 @@
 
         <% for(let i=0; i < data.length; i++){ %>
         <tr>
-          <td><a href="/content/<%= data[i].land_id %>"><%= data[i].name %></a></td>
+          <td><a href="/landPage/<%= data[i].land_id %>"><%= data[i].name %></a></td>
+          <td><%= data[i].location %></td>
+          <td><%= data[i].unit_size %></td>
+          <td><%= data[i].price_per_square_meter %></td>
+          <td><%= data[i].construction_company %></td>
+          <td><%= data[i].parking_ratio %></td>
+          <td><button data-land_id="<%= data[i].land_id %>" class='delete btn btn-outline-danger'>삭제</button></td>
+        </tr>
+        <% } %>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><button class='add btn btn-primary' onClick="location.href='addLand.html'">추가</button></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    </nav>
+
+    <table class="table table-hover table-striped text-center container mt-4" style="border: 1px solid;">
+      <thead>
+        <tr>
+          <th>이름</th>
+          <th>위치</th>
+          <th>크기(제곱미터)</th>
+          <th>단위 가격</th>
+          <th>건설사</th>
+          <th>건설사</th>
+          <th>세대당 주차 대수</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <% for(let i=0; i < data.length; i++){ %>
+        <tr>
+          <td><a href="/landPage/<%= data[i].land_id %>"><%= data[i].name %></a></td>
           <td><%= data[i].location %></td>
           <td><%= data[i].unit_size %></td>
           <td><%= data[i].price_per_square_meter %></td>
