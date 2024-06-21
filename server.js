@@ -9,7 +9,7 @@ var conn = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "root1234",
-    database: "workshopBankWeb",
+    database: "workshopBankWeb", 
 });
 
 conn.connect(function(err){
